@@ -1,0 +1,20 @@
+{
+  "name": "sap-fiori-url-generator",
+  "description": "Generate SAP Fiori Launchpad URLs from app names using AppList.json. Looks up app information by name and constructs proper FLP URLs with required parameters like sap-client and sap-language.",
+  "version": "2.1.0",
+  "author": {
+    "name": "SAP Skills Maintainers",
+    "email": "maintainers@example.com"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/secondsky/sap-skills",
+  "keywords": [
+    "fiori",
+    "fiori launchpad",
+    "flp",
+    "url generator",
+    "sap",
+    "sap-fiori-url-generator",
+    "app reference"
+  ]
+}

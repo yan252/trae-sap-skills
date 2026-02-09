@@ -1,0 +1,182 @@
+{
+  "id": "com.company.advancedwidget",
+  "version": "1.0.0",
+  "name": "Advanced Custom Widget",
+  "description": "A full-featured custom widget demonstrating all configuration options",
+  "vendor": "Company Name",
+  "license": "MIT",
+  "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjMTg5MGZmIiBkPSJNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnptLTIgMTVsLTUtNSAxLjQxLTEuNDFMMTAgMTQuMTdsNy41OS03LjU5TDE5IDhsLTkgOXoiLz48L3N2Zz4=",
+
+  "webcomponents": [
+    {
+      "kind": "main",
+      "tag": "advanced-custom-widget",
+      "url": "widget.js",
+      "integrity": "",
+      "ignoreIntegrity": true
+    },
+    {
+      "kind": "styling",
+      "tag": "advanced-widget-styling",
+      "url": "styling-panel.js",
+      "integrity": "",
+      "ignoreIntegrity": true
+    },
+    {
+      "kind": "builder",
+      "tag": "advanced-widget-builder",
+      "url": "builder-panel.js",
+      "integrity": "",
+      "ignoreIntegrity": true
+    }
+  ],
+
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Widget title displayed at the top",
+      "default": "My Advanced Widget"
+    },
+    "showTitle": {
+      "type": "boolean",
+      "description": "Whether to show the title",
+      "default": true
+    },
+    "primaryColor": {
+      "type": "Color",
+      "description": "Primary color for the widget theme",
+      "default": "#1890ff"
+    },
+    "backgroundColor": {
+      "type": "Color",
+      "description": "Background color for the widget",
+      "default": "#ffffff"
+    },
+    "fontSize": {
+      "type": "string",
+      "description": "Font size: small, medium, or large",
+      "default": "medium"
+    },
+    "padding": {
+      "type": "integer",
+      "description": "Internal padding in pixels",
+      "default": 16
+    },
+    "borderRadius": {
+      "type": "integer",
+      "description": "Border radius in pixels",
+      "default": 4
+    },
+    "chartType": {
+      "type": "string",
+      "description": "Type of chart to display",
+      "default": "bar"
+    },
+    "maxItems": {
+      "type": "integer",
+      "description": "Maximum number of items to display",
+      "default": 10
+    },
+    "enableAnimation": {
+      "type": "boolean",
+      "description": "Enable chart animations",
+      "default": true
+    }
+  },
+
+  "methods": {
+    "refresh": {
+      "description": "Refresh the widget data and re-render"
+    },
+    "exportAsPng": {
+      "description": "Export the chart as a PNG image",
+      "returnType": "string"
+    },
+    "setHighlight": {
+      "description": "Highlight a specific data point",
+      "parameters": [
+        {
+          "name": "index",
+          "type": "integer",
+          "description": "Index of the data point to highlight"
+        }
+      ]
+    },
+    "clearHighlight": {
+      "description": "Clear all highlights"
+    }
+  },
+
+  "events": {
+    "onItemClick": {
+      "description": "Fired when a data item is clicked",
+      "parameters": [
+        {
+          "name": "itemIndex",
+          "type": "integer",
+          "description": "Index of the clicked item"
+        },
+        {
+          "name": "itemLabel",
+          "type": "string",
+          "description": "Label of the clicked item"
+        },
+        {
+          "name": "itemValue",
+          "type": "number",
+          "description": "Value of the clicked item"
+        }
+      ]
+    },
+    "onSelectionChange": {
+      "description": "Fired when the selection changes",
+      "parameters": [
+        {
+          "name": "selectedItems",
+          "type": "Selection",
+          "description": "Currently selected items"
+        }
+      ]
+    },
+    "onRenderComplete": {
+      "description": "Fired when rendering is complete"
+    }
+  },
+
+  "dataBindings": {
+    "chartData": {
+      "feeds": [
+        {
+          "id": "dimensions",
+          "description": "Dimensions for chart categories",
+          "type": "dimension"
+        },
+        {
+          "id": "measures",
+          "description": "Measures for chart values",
+          "type": "mainStructureMember"
+        }
+      ]
+    }
+  },
+
+  "customTypes": {
+    "ChartStyle": {
+      "type": "object",
+      "properties": {
+        "barWidth": {
+          "type": "integer",
+          "default": 20
+        },
+        "barGap": {
+          "type": "string",
+          "default": "30%"
+        },
+        "showLabels": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    }
+  }
+}

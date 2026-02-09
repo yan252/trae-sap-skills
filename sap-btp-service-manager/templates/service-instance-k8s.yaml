@@ -1,0 +1,142 @@
+# Kubernetes ServiceInstance CRD Template
+# Documentation: https://github.com/SAP/sap-btp-service-operator
+# Usage: kubectl apply -f service-instance-k8s.yaml
+
+---
+# Basic Service Instance
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceInstance
+metadata:
+  name: my-service-instance
+  namespace: default
+  labels:
+    app: my-app
+    environment: development
+spec:
+  # Required: Service offering name from SAP BTP marketplace
+  serviceOfferingName: xsuaa
+
+  # Required: Service plan name
+  servicePlanName: application
+
+  # Optional: External name visible in BTP cockpit
+  externalName: my-service-instance-external
+
+  # Optional: Service-specific parameters
+  parameters:
+    xsappname: my-app
+    tenant-mode: dedicated
+
+---
+# XSUAA Service Instance with Full Configuration
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceInstance
+metadata:
+  name: xsuaa-instance
+  namespace: default
+spec:
+  serviceOfferingName: xsuaa
+  servicePlanName: application
+  externalName: xsuaa-instance
+  parameters:
+    xsappname: my-application
+    tenant-mode: dedicated
+    scopes:
+      - name: $XSAPPNAME.read
+        description: Read access
+      - name: $XSAPPNAME.write
+        description: Write access
+    role-templates:
+      - name: Viewer
+        description: View-only access
+        scope-references:
+          - $XSAPPNAME.read
+      - name: Editor
+        description: Full access
+        scope-references:
+          - $XSAPPNAME.read
+          - $XSAPPNAME.write
+
+---
+# Service Manager Instance (for service-operator-access)
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceInstance
+metadata:
+  name: service-manager-instance
+  namespace: default
+spec:
+  serviceOfferingName: service-manager
+  servicePlanName: service-operator-access
+  externalName: sm-operator-instance
+
+---
+# HANA Cloud HDI Container
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceInstance
+metadata:
+  name: hana-hdi-instance
+  namespace: default
+spec:
+  serviceOfferingName: hana
+  servicePlanName: hdi-shared
+  externalName: hana-hdi-container
+  parameters:
+    database_id: "<hana-database-guid>"
+    schema: "MY_SCHEMA"
+
+---
+# Destination Service Instance
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceInstance
+metadata:
+  name: destination-instance
+  namespace: default
+spec:
+  serviceOfferingName: destination
+  servicePlanName: lite
+  externalName: destination-service
+
+---
+# Instance with Parameters from Secret
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceInstance
+metadata:
+  name: instance-with-secret-params
+  namespace: default
+spec:
+  serviceOfferingName: xsuaa
+  servicePlanName: application
+  parametersFrom:
+    - secretKeyRef:
+        name: instance-parameters
+        key: parameters
+
+---
+# Secret containing instance parameters
+apiVersion: v1
+kind: Secret
+metadata:
+  name: instance-parameters
+  namespace: default
+type: Opaque
+stringData:
+  parameters: |
+    {
+      "xsappname": "my-app",
+      "tenant-mode": "dedicated"
+    }
+
+---
+# Instance with Custom Tags
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceInstance
+metadata:
+  name: tagged-instance
+  namespace: default
+spec:
+  serviceOfferingName: xsuaa
+  servicePlanName: application
+  customTags:
+    - environment:production
+    - team:platform
+    - cost-center:12345

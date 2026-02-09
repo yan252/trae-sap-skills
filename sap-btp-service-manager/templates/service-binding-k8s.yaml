@@ -1,0 +1,185 @@
+# Kubernetes ServiceBinding CRD Template
+# Documentation: https://github.com/SAP/sap-btp-service-operator
+# Usage: kubectl apply -f service-binding-k8s.yaml
+
+---
+# Basic Service Binding
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceBinding
+metadata:
+  name: my-binding
+  namespace: default
+spec:
+  # Required: Reference to ServiceInstance
+  serviceInstanceName: my-service-instance
+
+---
+# Binding with External Name
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceBinding
+metadata:
+  name: xsuaa-binding
+  namespace: default
+spec:
+  serviceInstanceName: xsuaa-instance
+  externalName: xsuaa-binding-external
+
+---
+# Binding with X.509 Credentials
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceBinding
+metadata:
+  name: xsuaa-binding-x509
+  namespace: default
+spec:
+  serviceInstanceName: xsuaa-instance
+  parameters:
+    credential-type: x509
+
+---
+# Binding with X.509 Custom Validity
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceBinding
+metadata:
+  name: xsuaa-binding-x509-custom
+  namespace: default
+spec:
+  serviceInstanceName: xsuaa-instance
+  parameters:
+    credential-type: x509
+    key-length: 4096
+    validity-type: MONTHS
+    validity: 6
+
+---
+# Binding with Custom Secret Name
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceBinding
+metadata:
+  name: custom-secret-binding
+  namespace: default
+spec:
+  serviceInstanceName: my-service-instance
+  # Secret will be created with this name instead of binding name
+  secretName: my-custom-secret
+
+---
+# Binding with Secret Root Key
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceBinding
+metadata:
+  name: binding-with-root-key
+  namespace: default
+spec:
+  serviceInstanceName: my-service-instance
+  # All credentials nested under this key in secret
+  secretRootKey: credentials
+
+---
+# Binding with Parameters from Secret
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceBinding
+metadata:
+  name: binding-with-secret-params
+  namespace: default
+spec:
+  serviceInstanceName: my-service-instance
+  parametersFrom:
+    - secretKeyRef:
+        name: binding-parameters
+        key: params
+
+---
+# Secret for binding parameters
+apiVersion: v1
+kind: Secret
+metadata:
+  name: binding-parameters
+  namespace: default
+type: Opaque
+stringData:
+  params: |
+    {
+      "credential-type": "x509",
+      "key-length": 4096
+    }
+
+---
+# Example: Using binding credentials in a Pod (Environment Variables)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-with-env-credentials
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: my-app:latest
+      env:
+        - name: XSUAA_CLIENTID
+          valueFrom:
+            secretKeyRef:
+              name: xsuaa-binding
+              key: clientid
+        - name: XSUAA_CLIENTSECRET
+          valueFrom:
+            secretKeyRef:
+              name: xsuaa-binding
+              key: clientsecret
+        - name: XSUAA_URL
+          valueFrom:
+            secretKeyRef:
+              name: xsuaa-binding
+              key: url
+
+---
+# Example: Using binding credentials in a Pod (Volume Mount)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-with-mounted-credentials
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: my-app:latest
+      volumeMounts:
+        - name: xsuaa-credentials
+          mountPath: /etc/secrets/xsuaa
+          readOnly: true
+  volumes:
+    - name: xsuaa-credentials
+      secret:
+        secretName: xsuaa-binding
+
+---
+# Example: Deployment with binding credentials
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-deployment
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: app
+          image: my-app:latest
+          envFrom:
+            - secretRef:
+                name: xsuaa-binding
+          volumeMounts:
+            - name: destination-credentials
+              mountPath: /etc/secrets/destination
+              readOnly: true
+      volumes:
+        - name: destination-credentials
+          secret:
+            secretName: destination-binding

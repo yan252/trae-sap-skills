@@ -1,0 +1,84 @@
+# GitHub Actions Workflow for UI5 Linter
+#
+# Place this file in: .github/workflows/ui5-lint.yml
+#
+# Prerequisites:
+#   - Package.json must have a 'lint' script that runs ui5lint
+#   - UI5 Linter must be installed as a dev dependency
+#   - UI5 Linter CLI supports: --quiet, --format (json/html), --details flags
+#
+# Documentation: https://github.com/UI5/linter
+
+name: UI5 Lint
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  lint:
+    name: Lint UI5 Code
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run UI5 Linter
+        run: npm run lint -- --quiet --format json 2> lint-diagnostics.log | tee lint-results.json
+        continue-on-error: true
+
+      - name: Display Lint Results
+        if: always()
+        run: cat lint-results.json
+
+      - name: Upload Lint Results
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: lint-results
+          path: lint-results.json
+          retention-days: 7
+
+      - name: Generate HTML Report
+        if: always()
+        run: npm run lint -- --format html --details 2> lint-diagnostics.log | tee lint-report.html
+        continue-on-error: true
+
+      - name: Upload HTML Report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: lint-report
+          path: lint-report.html
+          retention-days: 7
+
+      - name: Check Lint Results
+        run: |
+          if [ ! -f lint-results.json ]; then
+            echo "❌ Lint results file not found"
+            exit 1
+          fi
+          if ! jq '[.[].errorCount] | add' lint-results.json > /tmp/error_count 2>/dev/null; then
+            echo "❌ Failed to parse lint-results.json"
+            exit 1
+          fi
+          ERROR_COUNT=$(cat /tmp/error_count)
+          ERROR_COUNT=${ERROR_COUNT:-0}
+          if [ "$ERROR_COUNT" -gt 0 ]; then
+            echo "❌ Found $ERROR_COUNT linting errors"
+            exit 1
+          else
+            echo "✅ No linting errors found"
+          fi
