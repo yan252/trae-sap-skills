@@ -1,0 +1,20 @@
+{
+  "name": "clean-abap",
+  "description": "Check ABAP code for compliance with Clean ABAP principles. Use this skill when users ask to check, validate, review, or analyze ABAP code for clean code compliance, code quality, best practices, or adherence to Clean ABAP guidelines. Triggers include requests like \"check this ABAP code\", \"is this clean ABAP\", \"review my ABAP for clean code\", \"validate ABAP against clean code principles\", or \"analyze ABAP code quality\".",
+  "version": "2.1.0",
+  "author": {
+    "name": "SAP Skills Maintainers",
+    "email": "maintainers@example.com"
+  },
+  "license": "GPL-3.0",
+  "repository": "https://github.com/secondsky/sap-skills",
+  "keywords": [
+    "abap",
+    "clean code",
+    "code quality",
+    "best practices",
+    "code review",
+    "clean-abap",
+    "sap"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "com.company.mywidget",
+  "version": "1.0.0",
+  "name": "My Custom Widget",
+  "description": "A basic custom widget for SAP Analytics Cloud",
+  "vendor": "Company Name",
+  "license": "MIT",
+  "icon": "",
+  "webcomponents": [
+    {
+      "kind": "main",
+      "tag": "my-custom-widget",
+      "url": "widget.js",
+      "integrity": "",
+      "ignoreIntegrity": true
+    }
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Widget title displayed at the top",
+      "default": "My Widget"
+    }
+  },
+  "methods": {},
+  "events": {}
+}

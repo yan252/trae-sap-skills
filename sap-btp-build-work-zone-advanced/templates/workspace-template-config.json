@@ -1,0 +1,112 @@
+{
+  "_version": "1.0.0",
+  "sap.workspaceTemplate": {
+    "id": "{{namespace}}.{{templateName}}",
+    "version": "1.0.0",
+    "title": "{{Template Title}}",
+    "description": "{{Template description for workspace creation}}",
+    "icon": "sap-icon://collaborate"
+  },
+  "workspace": {
+    "name": "{{Default Workspace Name}}",
+    "description": "{{Default Workspace Description}}",
+    "privacy": "public",
+    "features": {
+      "feeds": true,
+      "contentCreation": true,
+      "forums": true,
+      "knowledgeBase": true,
+      "events": true
+    }
+  },
+  "pages": [
+    {
+      "id": "overview",
+      "title": "Overview",
+      "isDefault": true,
+      "layout": {
+        "sections": [
+          {
+            "columns": 2,
+            "widgets": [
+              {
+                "type": "Feed",
+                "column": 1,
+                "settings": {
+                  "title": "Recent Activity"
+                }
+              },
+              {
+                "type": "People",
+                "column": 2,
+                "settings": {
+                  "title": "Team Members"
+                }
+              }
+            ]
+          },
+          {
+            "columns": 3,
+            "widgets": [
+              {
+                "type": "Content",
+                "column": 1,
+                "settings": {
+                  "title": "Documents"
+                }
+              },
+              {
+                "type": "Event",
+                "column": 2,
+                "settings": {
+                  "title": "Upcoming Events"
+                }
+              },
+              {
+                "type": "RecentItems",
+                "column": 3,
+                "settings": {
+                  "title": "Recent Items"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "resources",
+      "title": "Resources",
+      "layout": {
+        "sections": [
+          {
+            "columns": 1,
+            "widgets": [
+              {
+                "type": "KnowledgeBase",
+                "column": 1,
+                "settings": {
+                  "title": "Knowledge Base"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "defaultRoles": [
+    {
+      "role": "Admin",
+      "description": "Full workspace administration"
+    },
+    {
+      "role": "Member",
+      "description": "Standard member access"
+    },
+    {
+      "role": "Viewer",
+      "description": "Read-only access"
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "_version": "1.52.0",
+  "_comment": "UI Integration Card manifest template for SAP Build Work Zone",
+  "sap.app": {
+    "id": "{{namespace}}.{{cardName}}",
+    "type": "card",
+    "title": "{{Card Title}}",
+    "subTitle": "{{Card Subtitle}}",
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
+    "dataSources": {
+      "_comment": "Note: This dataSources section documents the OData service metadata. Actual data fetching uses the destinations configuration in sap.card below.",
+      "mainService": {
+        "uri": "{{OData Service URL}}",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "2.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "sap-icon://card"
+    }
+  },
+  "sap.card": {
+    "type": "List",
+    "designtime": "dt/configuration",
+    "configuration": {
+      "destinations": {
+        "_comment": "Destinations are resolved at runtime via SAP BTP destination service",
+        "myDestination": {
+          "name": "{{Destination Name}}"
+        }
+      },
+      "parameters": {
+        "maxItems": {
+          "value": 5,
+          "type": "integer",
+          "label": "Maximum Items"
+        }
+      }
+    },
+    "header": {
+      "title": "{{Card Title}}",
+      "subTitle": "{{Card Subtitle}}",
+      "icon": {
+        "src": "sap-icon://list"
+      },
+      "status": {
+        "text": "{= ${count} + ' items'}"
+      }
+    },
+    "content": {
+      "data": {
+        "_comment": "Data is fetched using the destination reference, not the dataSources URI",
+        "request": {
+          "url": "{{destinations.myDestination}}/{{EntitySet}}",
+          "parameters": {
+            "$top": "{parameters>/maxItems/value}",
+            "$orderby": "{{OrderByField}} desc"
+          }
+        },
+        "path": "/d/results"
+      },
+      "item": {
+        "title": "{{{TitleField}}}",
+        "description": "{{{DescriptionField}}}",
+        "icon": {
+          "src": "sap-icon://product"
+        },
+        "actions": [
+          {
+            "type": "Navigation",
+            "parameters": {
+              "url": "{{Navigation URL}}/{{{IdField}}}"
+            }
+          }
+        ]
+      },
+      "maxItems": 5
+    }
+  }
+}
