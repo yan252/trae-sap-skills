@@ -493,8 +493,18 @@ For complete troubleshooting guide, see `references/troubleshooting.md`.
 
 ## Bundled Resources
 
-### Reference Documentation
-For detailed guidance, see the reference files in `references/`:
+### RAP (ABAP RESTful Application Programming Model) Reference
+For RAP development guidance, see the reference files in `references/`:
+
+- `rap-reference.md` - Complete RAP topic overview and navigation
+- `rap-development-guide.md` - Step-by-step development workflow
+- `rap-operations-eml.md` - Operations, EML, and transactional behavior
+- `rap-ui-annotations.md` - UI annotations and Fiori integration
+- `rap-extensibility-events.md` - Extensibility and business events
+- `rap-best-practices.md` - Best practices and implementation contracts
+
+### CDS View Reference
+For detailed CDS guidance, see the reference files in `references/`:
 
 - `annotations-reference.md` - Complete annotation catalog
 - `functions-reference.md` - All built-in functions with examples
@@ -513,10 +523,16 @@ For templates, see `templates/`:
 
 ## Source Documentation
 
-**Update this skill by checking**:
-- [https://help.sap.com/doc/abapdocu_cp_index_htm/CLOUD/en-US/abencds.html](https://help.sap.com/doc/abapdocu_cp_index_htm/CLOUD/en-US/abencds.html) (ABAP Cloud)
-- [https://help.sap.com/docs/SAP_NETWEAVER_AS_ABAP_752/f2e545608079437ab165c105649b89db/7c078765ec6d4e6b88b71bdaf8a2bd9f.html](https://help.sap.com/docs/SAP_NETWEAVER_AS_ABAP_752/f2e545608079437ab165c105649b89db/7c078765ec6d4e6b88b71bdaf8a2bd9f.html) (NetWeaver 7.52 User Guide)
-- [https://github.com/SAP-samples/abap-cheat-sheets](https://github.com/SAP-samples/abap-cheat-sheets)
-- [https://community.sap.com/t5/tag/CDS%20Views/tg-p](https://community.sap.com/t5/tag/CDS%20Views/tg-p)
+### RAP (ABAP RESTful Application Programming Model)
+- [Main Documentation](https://help.sap.com/docs/abap-cloud/abap-rap/abap-restful-application-programming-model?locale=en-US&version=s4_hana)
+- [Data Modeling and Behavior](https://help.sap.com/docs/abap-cloud/abap-rap/data-modeling-and-behavior?locale=en-US&version=s4_hana)
+- [Business Object Implementation Types](https://help.sap.com/docs/abap-cloud/abap-rap/business-object-implementation-types?locale=en-US&version=s4_hana)
+- [Entity Manipulation Language](https://help.sap.com/docs/abap-cloud/abap-rap/entity-manipulation-language-eml?locale=en-US&version=s4_hana)
 
-**Last Verified**: 2025-11-23
+### ABAP CDS
+- [ABAP CDS Documentation](https://help.sap.com/doc/abapdocu_cp_index_htm/CLOUD/en-US/abencds.html) (ABAP Cloud)
+- [ABAP CDS in NetWeaver 7.52](https://help.sap.com/docs/SAP_NETWEAVER_AS_ABAP_752/f2e545608079437ab165c105649b89db/7c078765ec6d4e6b88b71bdaf8a2bd9f.html)
+- [SAP Cheat Sheets](https://github.com/SAP-samples/abap-cheat-sheets)
+- [SAP Community - CDS Views](https://community.sap.com/t5/tag/CDS%20Views/tg-p)
+
+**Last Verified**: 2026-03-03
